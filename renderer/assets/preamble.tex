@@ -1,0 +1,221 @@
+\documentclass[
+  lang=cn,
+  color=blue,
+  mode=fancy,
+  scheme=chinese,
+  chinesefont=nofont,
+  math=newtx,
+  12pt
+]{elegantbook}
+
+% ---------- 可复现的中文字体 ----------
+\setCJKmainfont[
+  BoldFont={FandolSong-Bold.otf},
+  ItalicFont={FandolKai-Regular.otf}
+]{FandolSong-Regular.otf}
+\setCJKsansfont[
+  BoldFont={FandolHei-Bold.otf}
+]{FandolHei-Regular.otf}
+\setCJKmonofont{FandolFang-Regular.otf}
+
+\setCJKfamilyfont{zhsong}[
+  BoldFont={FandolSong-Bold.otf}
+]{FandolSong-Regular.otf}
+\setCJKfamilyfont{zhhei}[
+  BoldFont={FandolHei-Bold.otf}
+]{FandolHei-Regular.otf}
+\setCJKfamilyfont{zhkai}{FandolKai-Regular.otf}
+\setCJKfamilyfont{zhfs}{FandolFang-Regular.otf}
+
+\newcommand*{\songti}{\CJKfamily{zhsong}}
+\newcommand*{\heiti}{\CJKfamily{zhhei}}
+\newcommand*{\kaishu}{\CJKfamily{zhkai}}
+\newcommand*{\fangsong}{\CJKfamily{zhfs}}
+\renewcommand{\cbfseries}{\heiti}
+\renewcommand{\citshape}{\kaishu}
+\renewcommand{\cnormal}{\kaishu}
+\renewcommand{\cfs}{\fangsong}
+
+% ---------- 常用排版包 ----------
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{tasks}
+
+% ---------- ElegantBook Blue 主题的固定四色 ----------
+% 章节、页眉页脚、普通题目框：沉稳蓝
+\definecolor{structurecolor}{RGB}{60,113,183}
+% 定义框：绿色
+\definecolor{main}{RGB}{0,166,82}
+% 定理、引理、推论以及“证明”标签：橙色
+\definecolor{second}{RGB}{255,134,24}
+% 命题框、知识补充框：亮蓝色
+\definecolor{third}{RGB}{0,174,247}
+
+% ---------- 页面节奏 ----------
+\setlength{\parskip}{0.25em}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+\allowdisplaybreaks[2]
+
+
+
+\tcbset{
+  common/.style={
+    fontupper=\citshape,
+    lower separated=false,
+    coltitle=white,
+    colback=gray!5,
+    boxrule=0.5pt,
+    fonttitle=\bfseries,
+    enhanced,
+    breakable,
+    top=8pt,
+    before skip=8pt,
+    attach boxed title to top left={
+      yshift=-0.11in,
+      xshift=0.15in
+    },
+    boxed title style={
+      boxrule=0pt,
+      colframe=white,
+      arc=0pt,
+      outer arc=0pt
+    },
+    separator sign={.}
+  },
+  defstyle/.style={
+    common,
+    colframe=main,
+    colback=main!5,
+    colbacktitle=main,
+    overlay unbroken and last={
+      \node[anchor=south east,outer sep=0pt]
+        at (\linewidth-width,0)
+        {\textcolor{main}{$\clubsuit$}};
+    }
+  },
+  thmstyle/.style={
+    common,
+    colframe=second,
+    colback=second!5,
+    colbacktitle=second,
+    overlay unbroken and last={
+      \node[anchor=south east,outer sep=0pt]
+        at (\linewidth-width,0)
+        {\textcolor{second}{$\heartsuit$}};
+    }
+  },
+  prostyle/.style={
+    common,
+    colframe=third,
+    colback=third!5,
+    colbacktitle=third,
+    overlay unbroken and last={
+      \node[anchor=south east,outer sep=0pt]
+        at (\linewidth-width,0)
+        {\textcolor{third}{$\spadesuit$}};
+    }
+  }
+}
+
+% 证明位于定理框外：橙色粗体“证明”标签，正文为近黑色仿宋。
+% ElegantBook v4.7 默认不在结尾添加 QED 方块。
+\renewenvironment{proof}{
+  \par\noindent
+  \textbf{\color{second}\proofname\;}
+  \color{black!90}\cfs
+}{
+  \par
+}
+
+\newtcolorbox{checkedproblem}[1]{
+  enhanced,
+  colback=white,
+  colframe=structurecolor!82,
+  colbacktitle=structurecolor,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title={#1},
+  boxrule=0.7pt,
+  arc=1.5mm,
+  left=7pt,
+  right=7pt,
+  top=8pt,
+  bottom=7pt,
+  before skip=10pt,
+  after skip=10pt,
+  attach boxed title to top left={
+    xshift=5mm,
+    yshift=-2.5mm
+  },
+  boxed title style={
+    arc=1mm,
+    boxrule=0pt
+  }
+}
+
+\newtcolorbox{supplementbox}[1][知识补充]{
+  enhanced,
+  breakable,
+  colback=third!4,
+  colframe=third!75,
+  title={#1},
+  colbacktitle=third!85,
+  coltitle=white,
+  fonttitle=\bfseries,
+  boxrule=0.6pt,
+  arc=1.2mm,
+  left=7pt,
+  right=7pt,
+  top=7pt,
+  bottom=7pt
+}
+
+\newtcolorbox{analysisbox}[1][解析]{
+  enhanced,
+  breakable,
+  colback=structurecolor!3,
+  colframe=structurecolor!58,
+  title={#1},
+  colbacktitle=structurecolor!88,
+  coltitle=white,
+  fonttitle=\bfseries,
+  boxrule=0.6pt,
+  arc=1.2mm,
+  left=7pt,
+  right=7pt,
+  top=7pt,
+  bottom=7pt,
+  before skip=6pt,
+  after skip=12pt
+}
+
+\newlength{\problemSlotHeight}
+
+% 可选参数用于在该页顶部生成一个 section 标题。
+\newenvironment{twoproblempage}[1][0.46\textheight]{%
+  \clearpage
+  \begingroup
+  \setlength{\parskip}{0pt}%
+  \setlength{\problemSlotHeight}{#1}%
+}{%
+  \par
+  \endgroup
+  \clearpage
+}
+
+\newenvironment{halfpageproblem}[1]{%
+  \noindent
+  \begin{minipage}[t][\problemSlotHeight][t]{\textwidth}
+  \begin{checkedproblem}{#1}
+}{%
+  \end{checkedproblem}
+  \vfill
+  \end{minipage}
+  \par
+  \vspace{0.02\textheight}
+}
+
+\newcommand{\answerspace}[1][6cm]{\par\vspace*{#1}}

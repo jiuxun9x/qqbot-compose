@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+/data/
+/backups/
+/.state/
+/.runtime/
+/.venv/
+/plugin_data/
+__pycache__/
+*.py[cod]
+*.sqlite*
+*.db
+*.log
+*.pem
+*.key
+.DS_Store

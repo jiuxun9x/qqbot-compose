@@ -1,0 +1,13 @@
+{
+  "verified_at": "2026-10-22",
+  "astrbot": {
+    "version": "v4.29.1",
+    "image": "soulter/astrbot:v4.29.1@sha256:a140a326163ac5f82f62153f033cddeac74e38e4ee1809c6e333e950ff19edc4",
+    "source": "https://github.com/AstrBotDevs/AstrBot/releases/tag/v4.29.1"
+  },
+  "napcat": {
+    "version": "v4.18.37 (verified from running container startup)",
+    "image": "mlikiowa/napcat-docker:latest@sha256:f611790ecffa23c3c182017d5cf68179dc24612403608cd835ad13d79642f1bd",
+    "source": "https://github.com/NapNeko/NapCat-Docker"
+  }
+}

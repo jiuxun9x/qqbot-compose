@@ -1,0 +1,115 @@
+{
+  "enabled": true,
+  "platform_ids": [
+    "napcat"
+  ],
+  "default_model": "",
+  "deep_model": "",
+  "default_provider_id": "api_chat",
+  "deep_provider_id": "api_deep",
+  "classifier_provider_id": "api_classifier",
+  "classifier_timeout_seconds": 4,
+  "classifier_image_timeout_seconds": 8,
+  "max_question_chars": 5000,
+  "request_limits": {
+    "routing_total_seconds": 20,
+    "normal_total_seconds": 120,
+    "deep_total_seconds": 600,
+    "image_total_seconds": 200,
+    "cleanup_total_seconds": 10,
+    "progress_notice_seconds": 30,
+    "file_prepare_total_seconds": 90,
+    "file_total_seconds": 180
+  },
+  "presentation": {
+    "enabled": true,
+    "renderer_url": "http://renderer:8080/render",
+    "timeout_seconds": 65
+  },
+  "image_generation": {
+    "enabled": false,
+    "model": "",
+    "endpoint": "",
+    "max_prompt_chars": 2000,
+    "timeout_seconds": 150,
+    "cache_sessions": 32,
+    "cache_ttl_seconds": 86400
+  },
+  "group_reply": {
+    "enabled": true,
+    "probability": 0.05,
+    "cooldown_seconds": 5,
+    "context_messages": 100,
+    "message_chars": 400,
+    "max_groups": 64,
+    "context_ttl_seconds": 1800
+  },
+  "deep_keywords": [
+    "深度",
+    "高强度",
+    "认真思考",
+    "仔细思考",
+    "做题",
+    "解题",
+    "数学题",
+    "难题",
+    "竞赛",
+    "证明",
+    "推导",
+    "求解",
+    "干活",
+    "写代码",
+    "编程",
+    "算法",
+    "排错",
+    "debug",
+    "查错",
+    "审查代码",
+    "优化代码",
+    "写方案",
+    "详细分析",
+    "认真分析",
+    "深入",
+    "深思",
+    "深一点",
+    "认真想",
+    "仔细想",
+    "多想一会",
+    "多想想",
+    "想透彻",
+    "think hard",
+    "deep think",
+    "ultrathink"
+  ],
+  "notifications": {
+    "automatic_progress": false,
+    "busy_reply": false,
+    "image_started": false
+  },
+  "owner_qq": "",
+  "concurrency": {
+    "max_concurrent": 1,
+    "queue_enabled": true,
+    "max_pending_sessions": 8,
+    "max_pending_per_session": 5,
+    "max_pending_chars": 8000,
+    "queue_wait_seconds": 660
+  },
+  "voice_input": {
+    "enabled": false,
+    "model": "",
+    "api_base": "",
+    "api_key_env": "AUDIO_API_KEY",
+    "max_duration_seconds": 60,
+    "transcription_timeout_seconds": 40,
+    "max_text_chars": 2000
+  },
+  "web_search": {
+    "enabled": false,
+    "timeout_seconds": 45,
+    "provider_timeout_seconds": 8,
+    "max_attempts": 4,
+    "max_query_chars": 800,
+    "max_sources": 2
+  }
+}

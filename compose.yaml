@@ -1,0 +1,102 @@
+name: qqbot
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  astrbot:
+    build:
+      context: ./astrbot
+      args:
+        ASTRBOT_IMAGE: ${ASTRBOT_IMAGE:?Run scripts/configure.py init first}
+    image: qqbot-astrbot:1.0.0
+    restart: unless-stopped
+    init: true
+    environment:
+      TZ: Asia/Shanghai
+      API_KEY: ${API_KEY:?API key is required}
+      IMAGE_API_KEY: ${IMAGE_API_KEY:-}
+      AUDIO_API_KEY: ${AUDIO_API_KEY:-}
+      PYTHONUNBUFFERED: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    ports:
+      - "127.0.0.1:6185:6185"
+    expose: ["6199"]
+    volumes:
+      - ./data/astrbot:/AstrBot/data
+    networks: [qqbot, render]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    logging: *logging
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; r=urllib.request.urlopen('http://127.0.0.1:6185/', timeout=5); assert r.status == 200"]
+      interval: 45s
+      timeout: 7s
+      retries: 3
+      start_period: 90s
+
+  renderer:
+    build: ./renderer
+    image: qqbot-renderer:1.0.0
+    restart: unless-stopped
+    init: true
+    read_only: true
+    user: "65532:65532"
+    cpus: 1
+    # One-page samples used ~242 MiB without a cap. Keep substantial headroom.
+    mem_limit: 768m
+    mem_reservation: 128m
+    memswap_limit: 1024m
+    pids_limit: 64
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=256m,mode=1777
+    networks: [render]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    logging: *logging
+    healthcheck:
+      test: [CMD, python3, -c, "import urllib.request; assert urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).status == 200"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  napcat:
+    image: ${NAPCAT_IMAGE:?Run scripts/configure.py init first}
+    hostname: qqbot-napcat
+    restart: unless-stopped
+    init: true
+    environment:
+      TZ: Asia/Shanghai
+      NAPCAT_UID: "1000"
+      NAPCAT_GID: "1000"
+      MODE: reverse_ws
+      ONEBOT_URL: ws://astrbot:6199/ws
+      WEBUI_TOKEN: ${NAPCAT_WEBUI_TOKEN:?WebUI token is required}
+    ports:
+      - "127.0.0.1:6099:6099"
+    volumes:
+      - ./data/napcat/qq:/app/.config/QQ
+      - ./data/napcat/config:/app/napcat/config
+      - ./data/napcat/plugins:/app/napcat/plugins
+    networks: [qqbot]
+    depends_on:
+      astrbot:
+        condition: service_healthy
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [NET_RAW, NET_BIND_SERVICE]
+    ulimits:
+      core: 0
+    logging: *logging
+
+# Dedicated application bridge permits outbound QQ and remote API traffic.
+networks:
+  qqbot:
+    driver: bridge
+  render:
+    internal: true

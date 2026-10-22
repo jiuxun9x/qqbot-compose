@@ -1,0 +1,25 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper,margin=20mm]{geometry}
+\usepackage{fontspec,xeCJK}
+\setCJKmainfont[BoldFont={FandolHei-Bold.otf},ItalicFont={FandolKai-Regular.otf}]{FandolHei-Regular.otf}
+\setCJKmonofont{FandolFang-Regular.otf}
+\setmonofont{Latin Modern Mono}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[table]{xcolor}
+\usepackage{longtable,booktabs,array,graphicx,calc}
+\usepackage{hyperref,microtype,enumitem,fancyvrb,fvextra,framed,titlesec}
+\definecolor{structurecolor}{RGB}{60,113,183}
+\definecolor{codeback}{RGB}{245,247,250}
+\definecolor{shadecolor}{RGB}{245,247,250}
+\hypersetup{colorlinks=true,urlcolor=structurecolor,linkcolor=structurecolor}
+\titleformat{\section}{\Large\bfseries\color{structurecolor}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\color{structurecolor}}{}{0pt}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{}{0pt}{}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlength{\emergencystretch}{3em}
+\setcounter{secnumdepth}{0}
+\raggedbottom
+\allowdisplaybreaks[2]
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\small,frame=single,rulecolor=\color{black!18},framesep=6pt}
