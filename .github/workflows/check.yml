@@ -9,24 +9,24 @@ concurrency:
   cancel-in-progress: true
 jobs:
   unit:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: tests/requirements.txt
-      - name: Ensure audio decoder
-        timeout-minutes: 3
+      - name: Install test dependencies and decoder
+        timeout-minutes: 4
         run: |
+          python -m pip install -r tests/requirements.txt imageio-ffmpeg==0.6.0
           if ! command -v ffmpeg >/dev/null; then
-            sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=20 update
-            sudo apt-get install -y --no-install-recommends ffmpeg
+            decoder=$(python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')
+            sudo install -m 755 "$decoder" /usr/bin/ffmpeg
           fi
-          ffmpeg -version | head -n 1
-      - run: python -m pip install -r tests/requirements.txt
+          ffmpeg -version
       - run: python -m unittest discover -s tests -v
       - name: Validate Compose without real credentials
         env:
