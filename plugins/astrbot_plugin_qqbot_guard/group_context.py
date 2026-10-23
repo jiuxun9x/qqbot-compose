@@ -52,3 +52,17 @@ class GroupContextStore:
             return result
         finally:
             db.close()
+
+    def recent(self, chat_key):
+        """Read only this group's unexpired messages, without adding a fake turn."""
+        if not self.path.exists():
+            return []
+        now = time.time()
+        db = sqlite3.connect(self.path.as_uri()+'?mode=ro', uri=True, timeout=3)
+        try:
+            rows = db.execute('SELECT m.sender,m.content,o.metadata FROM messages m LEFT JOIN message_objects o ON o.message_id=m.id WHERE m.chat_key=? AND m.created>=? ORDER BY m.id DESC LIMIT ?',
+                              (chat_key, now-self.ttl, self.max_messages)).fetchall()
+            return [dict(speaker=name, text=text, **(json.loads(metadata) if metadata else {}))
+                    for name, text, metadata in reversed(rows)]
+        finally:
+            db.close()

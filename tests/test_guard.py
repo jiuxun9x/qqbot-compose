@@ -137,6 +137,7 @@ class GuardTests(unittest.IsolatedAsyncioTestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.guard._group_store = guard_module.GroupContextStore(Path(self.temp.name) / "group.sqlite3")
+        self.guard._reactions = guard_module.ReactionStore(Path(self.temp.name) / 'reactions.sqlite3')
         self.guard._group_modes = guard_module.GroupReplyModes(Path(self.temp.name) / 'group-modes.sqlite3')
         self.guard._file_modes = guard_module.GroupReplyModes(Path(self.temp.name) / 'file-modes.sqlite3',default=False)
         self.guard._media=guard_module.MediaContextStore(Path(self.temp.name)/'media')

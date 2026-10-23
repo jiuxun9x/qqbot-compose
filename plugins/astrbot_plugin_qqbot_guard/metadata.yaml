@@ -1,6 +1,6 @@
 name: qqbot_guard
 display_name: QQ 聊天与排版
 desc: 会话队列、群聊判断、按需绘图、文件和公式图片
-version: v1.0.1
+version: v1.1.0
 author: jiuxun9x
 repo: https://github.com/jiuxun9x/qqbot-compose
