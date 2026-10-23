@@ -159,7 +159,7 @@ class AttachmentReader:
 def user_error(code):
     return {
         'collector_full':'附件接收队列已满，这次没能接收，请稍后重发。',
-        'unsupported_type':'这个文件格式暂不支持。可以发 PDF、DOCX、XLSX、TXT、Markdown、CSV 或常见代码文件；旧版 DOC/XLS 请先另存为新格式。',
+        'unsupported_type':'这个文件格式暂不支持。ZIP 请先解压后发里面的 PDF、DOCX、XLSX、TXT、Markdown、CSV 或代码文件；DOC/XLS 请另存为 DOCX/XLSX。',
         'file_too_large':'文件超过 10 MB，请拆分或压缩后重发。',
         'too_many_files':'一次最多读取两个文件，请分批发送。',
         'encrypted_file':'这个文件有密码保护，请先解密后重发。',
